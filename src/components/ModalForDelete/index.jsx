@@ -10,8 +10,6 @@ import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
  *
  */
 const ModalForDelete = ({ txtButton = "Eliminar", action, id, getData }) => {
-  console.log("delete id", id);
-
   const [open, setOpen] = useState(false);
 
   const handleOpenCloseModal = () => setOpen(!open);

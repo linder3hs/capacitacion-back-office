@@ -1,46 +1,17 @@
 import { useState, useEffect } from "react";
 import { Box, Container, Grid } from "@mui/material";
-import { Table, Modal, CreateProduct } from "../../components";
-import ModalForDelete from "../../components/ModalForDelete";
+import {
+  Table,
+  Modal,
+  CreateProduct,
+  ModalForEdit,
+  ModalForDelete,
+} from "../../components";
 import {
   getProducts,
   updateProduct,
   deleteProduct,
 } from "../../services/products";
-
-const ButtonsTable = ({
-  open,
-  handleOpenCloseModal,
-  fetchProducts,
-  row,
-  updateProduct,
-}) => {
-  return (
-    <>
-      <Modal
-        txtButton="Editar Producto"
-        open={open}
-        handleOpenCloseModal={handleOpenCloseModal}
-        content={
-          <CreateProduct
-            fetchProducts={fetchProducts}
-            handleOpenCloseModal={handleOpenCloseModal}
-            isUpdate
-            data={row.row}
-            id={row.id}
-            updateProduct={updateProduct}
-          />
-        }
-      />
-      &nbsp;&nbsp;&nbsp;
-      <ModalForDelete
-        action={deleteProduct}
-        id={row.id}
-        getData={fetchProducts}
-      />
-    </>
-  );
-};
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -91,15 +62,25 @@ const Home = () => {
       headerName: "Acciones",
       sortable: false,
       width: 300,
-      renderCell: (row) => (
-        <ButtonsTable
-          open={open}
-          handleOpenCloseModal={handleOpenCloseModal}
-          fetchProducts={fetchProducts}
-          row={row}
-          updateProduct={updateProduct}
-        />
-      ),
+      renderCell: (row) => {
+        console.log(row);
+
+        return (
+          <>
+            <ModalForEdit
+              data={row.row}
+              action={updateProduct}
+              getData={fetchProducts}
+            />
+            &nbsp;&nbsp;&nbsp;
+            <ModalForDelete
+              action={deleteProduct}
+              id={row.id}
+              getData={fetchProducts}
+            />
+          </>
+        );
+      },
     },
   ];
 
