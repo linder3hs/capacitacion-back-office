@@ -20,3 +20,22 @@ export const POST = (body) => {
     body: JSON.stringify(body),
   };
 };
+
+export const PUT = (body) => {
+  return {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  };
+};
+
+export const DELETE = (id) => {
+  return {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+};

@@ -1,11 +1,6 @@
-import { useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 
-const Modal = ({ txtButton, content }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpenCloseModal = () => setOpen(!open);
-
+const Modal = ({ txtButton, content, open, handleOpenCloseModal }) => {
   return (
     <div>
       <Button onClick={handleOpenCloseModal} variant="contained">

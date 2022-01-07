@@ -1,14 +1,26 @@
 import { useState } from "react";
-import { Button, Grid, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Grid, TextField } from "@mui/material";
 import { storeProduct } from "../../services/products";
 
-const CreateProduct = ({ fetchProducts }) => {
+const CreateProduct = ({
+  fetchProducts,
+  handleOpenCloseModal,
+  isUpdate = false,
+  data,
+  id,
+  updateProduct,
+}) => {
+  console.log("id", id);
+
   const [values, setValues] = useState({
-    name: "",
-    price: "",
-    description: "",
-    category: "",
+    name: data?.name || "",
+    price: data?.price || "",
+    description: data?.description || "",
+    category: data?.category || "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,15 +32,23 @@ const CreateProduct = ({ fetchProducts }) => {
   };
 
   const handleSubmit = async () => {
-    await storeProduct(values);
+    setIsLoading(true);
+
+    isUpdate
+      ? await updateProduct(values, data._id)
+      : await storeProduct(values);
 
     await fetchProducts();
+
+    setIsLoading(false);
+
+    handleOpenCloseModal();
   };
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <h4>Crear Producto</h4>
+        <h4>{isUpdate ? "Actualizar Producto" : "Crear Producto"}</h4>
       </Grid>
       <Grid item xs={12} sm={6}>
         <TextField
@@ -71,9 +91,17 @@ const CreateProduct = ({ fetchProducts }) => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Crear
-        </Button>
+        <LoadingButton
+          loading={isLoading}
+          loadingPosition="start"
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          size="large"
+          style={{ width: 200 }}
+        >
+          {isUpdate ? "Actualizar" : "Crear"}
+        </LoadingButton>
       </Grid>
     </Grid>
   );
